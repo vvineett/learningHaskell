@@ -1,10 +1,11 @@
-import qualified Data.Map.Strict as Map
+import qualified Data.Map.Lazy as Map
 
 main = do
-	putStrLn $ show $ list8 where
-		list8 = foldl add (0,Map.empty) [ (sProd w count (px 8 n)) | x <- Map.toList (snd list6), let w = (fst list6); count = snd x; n = fst x ] where
-			list6 = foldl add (0,Map.empty) [ (sProd w count (px 6 n)) | x <- Map.toList (snd list4), let w = (fst list4); count = snd x; n = fst x ] where
-				list4 = px 4 1
+	putStrLn $ show $ list12 where
+		list12 = foldl add (0,Map.empty) [ (sProd w count (px 12 n)) | x <- Map.toList (snd list8), let w = (fst list8); count = snd x; n = fst x ] where
+			list8 = foldl add (0,Map.empty) [ (sProd w count (px 8 n)) | x <- Map.toList (snd list6), let w = (fst list6); count = snd x; n = fst x ] where
+				list6 = foldl add (0,Map.empty) [ (sProd w count (px 6 n)) | x <- Map.toList (snd list4), let w = (fst list4); count = snd x; n = fst x ] where
+					list4 = px 4 1
 	--putStrLn $ show $ foldl add (0,Map.empty) [ (sProd w count (px 20 n)) | x <- Map.toList (snd list12), let w = (fst list12); count = snd x; n = fst x ] where
 	--	list12 = foldl add (0,Map.empty) [ (sProd w count (px 12 n)) | x <- Map.toList (snd list8), let w = (fst list8); count = snd x; n = fst x ] where
 	--		list8 = foldl add (0,Map.empty) [ (sProd w count (px 8 n)) | x <- Map.toList (snd list6), let w = (fst list6); count = snd x; n = fst x ] where

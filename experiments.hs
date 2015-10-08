@@ -1,7 +1,8 @@
 import Data.Char
 import Data.List
-main = do
-	putStrLn $ show $ unusualPrimesSeq
+import qualified Data.Map.Strict as Map
+--main = do
+	--putStrLn $ show $ unusualPrimesSeq
 
 disregard::[Char]->[Char]
 disregard [] = []
@@ -69,3 +70,7 @@ seivedPrimes (h:t) = h:(seivedPrimes [x | x <- t, (x `rem` h) /= 0])
 
 qsort [] = []
 qsort (h:t) = qsort [x | x<- t, x>=h] ++ h:[] ++ qsort [x | x<-t, x<h]
+
+instance Functor Map.Map k where
+	fmap f Map.empty = Map.empty
+	fmap f (Map.fromList (h:t)) = Map.insert (fst h) (f (snd h)) (fmap f (Map.fromList t)) 
