@@ -28,8 +28,10 @@ group' n li = (take 10 li):(group' n (drop n li))
 constructSol::Maybe Assigned->Puzzle
 constructSol (Just []) = (take 9 (repeat "000000000"))
 constructSol Nothing = (take 9 (repeat "000000000"))
-constructSol (Just (h:t)) = replace (fst h) (snd h) (constructSol (Just t)) 0
-
+constructSol (Just (h:t)) = fill (fst h) (snd h) (constructSol (Just t)) where
+	fill (i, j) e (h : t)	| i == 0	= (replace j e h) : t
+							| i > 0		= h : (fill (i-1, j) e t)
+							| i < 0		= h : t
 
 --type Constraint = [(Pos,Pos)]
 
@@ -40,7 +42,7 @@ domainGen puzzle = [((x,y), d) | x<-[0..8], y<-[0..8], let d = if (puzzle !! x)!
 --constraintGraph = [(p,q) | p<-[(x,y)|x<-[0..8],y<-[0..8]], q<-(conflictPos p)] 
 
 consistent::State->Bool
-consistent = foldl (\acc x -> if length (snd x) == 0 then False else acc) True
+consistent = foldl (\acc x -> (length (snd x) /= 0) && acc) True
 
 --solved::Sate->Bool
 --solved state = (length [ w | pd <- state, let w = (snd pd), length w == 1]) == 81
@@ -83,6 +85,8 @@ start a state
 		c = head (snd min)
 		update state pos ch = [(position, d) | x<-state, let position = fst x; d = if position == pos then tail (snd x) else snd x]
 
-replace::Pos->Char->Puzzle->Int->Puzzle
-replace pos c (h:puzz) row = if (fst pos) == row then (replaceChar (snd pos) c h 0):puzz else h:(replace pos c puzz (row+1)) where
-			replaceChar n c (h:t) x = if n==x then c:t else h:(replaceChar n c t (x+1))
+replace::Int->a->[a]->[a]
+replace _ _ [] = []
+replace i e (h:t)	| i == 0 = e : t
+					| i > 0  = h : (replace (i -1) e t)
+					| i < 0  = h : t
