@@ -44,4 +44,3 @@ duplicatesOnly [] = []
 duplicatesOnly (x:[]) = []
 duplicatesOnly (x:xs) | x == head xs = x : duplicatesOnly ( dropWhile (== x) xs)
                     | otherwise = duplicatesOnly xs
-
